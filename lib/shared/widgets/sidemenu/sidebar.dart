@@ -99,9 +99,9 @@ class Sidebar extends StatelessWidget {
                     // Customers
                     ExpansionTile(
                       leading: SvgPicture.asset(
-                          "assets/icons/profile_circled_light.svg"),
+                          "assets/icons/notification_filled.svg"),
                       title: Text(
-                        "Customers",
+                        "Notification",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).textTheme.bodyMedium!.color,
@@ -110,26 +110,28 @@ class Sidebar extends StatelessWidget {
                       children: [
                         MenuTile(
                           isSubmenu: true,
-                          title: "Dashboard",
-                          onPressed: () {},
+                          title: "Create",
+                          onPressed: () {
+                            onPressed("notification-create");
+                          },
                         ),
                         MenuTile(
                           isSubmenu: true,
-                          title: "Products",
+                          title: "List",
                           count: 16,
                           onPressed: () {},
                         ),
-                        MenuTile(
-                          isSubmenu: true,
-                          title: "Add Product",
-                          onPressed: () {},
-                        ),
+                        // MenuTile(
+                        //   isSubmenu: true,
+                        //   title: "Add Product",
+                        //   onPressed: () {},
+                        // ),
                       ],
                     ),
                     MenuTile(
-                      title: "Shop",
-                      activeIconSrc: "assets/icons/store_light.svg",
-                      inactiveIconSrc: "assets/icons/store_filled.svg",
+                      title: "Advertisement",
+                      activeIconSrc: "assets/icons/notification_filled.svg",
+                      inactiveIconSrc: "assets/icons/notification_filled.svg",
                       onPressed: () {},
                     ),
                   ],

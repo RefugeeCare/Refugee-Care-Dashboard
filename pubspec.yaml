@@ -26,8 +26,9 @@ dependencies:
   hive_flutter: ^1.1.0
   get_it: ^8.0.0
   http: ^1.2.1
-  # appwrite:
-  #   path: /Users/vanzarlyanhtan/VSCode Projects/refugee_care_mobile/app-write-sdk
+  equatable: ^2.0.5
+  appwrite:
+    path: /Users/vanzarlyanhtan/VSCode Projects/refugee_care_mobile/app-write-sdk
 
 dev_dependencies:
   flutter_test:

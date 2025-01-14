@@ -29,7 +29,7 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>core_dashboard</title>
+  <title>refugee_dashboard</title>
   <link rel="manifest" href="manifest.json">
 
   <script>
@@ -44,16 +44,19 @@
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            appRunner.runApp();
-          });
-        }
+      serviceWorker: {
+        serviceWorkerVersion: serviceWorkerVersion,
+      },
+      onEntrypointLoaded: function(engineInitializer) {
+        engineInitializer.initializeEngine().then(function(appRunner) {
+        appRunner.runApp();
+        });
+      }
+      }).catch(function(error) {
+      console.error('Failed to load entrypoint:', error);
       });
     });
+    //});
   </script>
 </body>
 </html>

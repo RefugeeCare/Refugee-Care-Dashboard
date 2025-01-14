@@ -1,9 +1,9 @@
 import 'package:refugee_dashboard/pages/dashboard/widgets/popular_products.dart';
+import 'package:refugee_dashboard/pages/notification/presenter/notification_create_screen.dart';
 import 'package:refugee_dashboard/responsive.dart';
 import 'package:refugee_dashboard/shared/constants/defaults.dart';
 import 'package:refugee_dashboard/shared/widgets/sidemenu/sidebar.dart';
 import 'package:refugee_dashboard/shared/widgets/sidemenu/tab_sidebar.dart';
-import 'package:refugee_dashboard/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../shared/widgets/header.dart';
@@ -108,6 +108,14 @@ class _EndPointState extends State<EntryPoint> {
                                   (Responsive.isMobile(context) ? 1 : 1.5),
                             ),
                             child: const SafeArea(child: PopularProducts()),
+                          ),
+                        if (widget.currentScreen == "notification-create")
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppDefaults.padding *
+                                  (Responsive.isMobile(context) ? 1 : 1.5),
+                            ),
+                            child: SafeArea(child: NotificationCreateScreen()),
                           ),
                       ],
                     ),

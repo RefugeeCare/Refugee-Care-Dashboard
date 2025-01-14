@@ -186,8 +186,8 @@ class BarChartSample1State extends State<BarChartSample8> {
             showTitles: true,
             // getTitlesWidget: getTitles,
             getTitlesWidget: (value, meta) => SideTitleWidget(
-              child: Text(value.toString()),
               axisSide: meta.axisSide,
+              child: Text(value.toString()),
               //meta: meta,
             ),
             reservedSize: 38,
