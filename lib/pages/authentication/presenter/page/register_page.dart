@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-import 'widgets/signup_benefits.dart';
-import 'widgets/signup_form.dart';
+import '../widgets/signup_benefits.dart';
+import '../widgets/signup_form.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
-
+  static String routeName = "/register";
   @override
   Widget build(BuildContext context) {
     return Scaffold(

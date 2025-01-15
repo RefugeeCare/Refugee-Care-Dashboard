@@ -14,6 +14,7 @@ final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 class EntryPoint extends StatefulWidget {
   EntryPoint([Key? key, this.currentScreen = "d"]);
   String currentScreen;
+  static String routeName = "/entryPoint";
   @override
   State<EntryPoint> createState() => _EndPointState();
 }

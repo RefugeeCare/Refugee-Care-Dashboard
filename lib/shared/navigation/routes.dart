@@ -1,21 +1,21 @@
-import 'package:refugee_dashboard/pages/authentication/register_page.dart';
-import 'package:refugee_dashboard/pages/authentication/sign_in_page.dart';
+import 'package:refugee_dashboard/pages/authentication/presenter/page/register_page.dart';
+import 'package:refugee_dashboard/pages/authentication/presenter/page/sign_in_page.dart';
 import 'package:refugee_dashboard/pages/entry_point.dart';
 import 'package:go_router/go_router.dart';
 
 final routerConfig = GoRouter(
-  initialLocation: '/',
+  initialLocation: SignInPage.routeName,
   routes: [
     GoRoute(
-      path: '/',
+      path: EntryPoint.routeName,
       builder: (context, state) => EntryPoint(),
     ),
     GoRoute(
-      path: '/sign-in',
+      path: SignInPage.routeName,
       builder: (context, state) => const SignInPage(),
     ),
     GoRoute(
-      path: '/register',
+      path: RegisterPage.routeName,
       builder: (context, state) => const RegisterPage(),
     ),
     // GoRoute(

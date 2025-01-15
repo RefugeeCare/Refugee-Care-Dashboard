@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:appwrite/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,9 +19,9 @@ class NotificationCreateScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = GlobalKey<FormState>();
-    final title = useState('');
-    final description = useState('');
-    final description2 = useState('');
+    final title = useTextEditingController();
+    final description = useTextEditingController();
+    final description2 = useTextEditingController();
     final messageType = useState('');
 
     return SingleChildScrollView(
@@ -57,18 +60,20 @@ class NotificationCreateScreen extends HookConsumerWidget {
                   ),
 
                   // value: provider.state.message,
-                  onChanged: (value) {
-                    // provider.updateMessage(value);
-                  },
+                  // onChanged: (value) {
+                  //   title.value = title.value;
+                  //   // provider.updateMessage(value);
+                  // },
+                  controller: title,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a title';
                     }
                     return null;
                   },
-                  onSaved: (value) {
-                    title.value = value!;
-                  },
+                  // onSaved: (value) {
+                  //   title.value = value!;
+                  // },
                 ),
                 gapH16,
                 RefugeeFormFeild(
@@ -78,18 +83,20 @@ class NotificationCreateScreen extends HookConsumerWidget {
                       const InputDecoration(hintText: 'Enter a description'),
 
                   // value: provider.state.message,
-                  onChanged: (value) {
-                    // provider.updateMessage(value);
-                  },
+                  // onChanged: (value) {
+                  //   description.value = value;
+                  //   // provider.updateMessage(value);
+                  // },
+                  controller: description,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a description';
                     }
                     return null;
                   },
-                  onSaved: (value) {
-                    description.value = value!;
-                  },
+                  // onSaved: (value) {
+                  //   description.value = value!;
+                  // },
                 ),
                 gapH16,
                 RefugeeFormFeild(
@@ -99,12 +106,14 @@ class NotificationCreateScreen extends HookConsumerWidget {
                   ),
                   maxLines: 5,
                   // value: provider.state.message,
-                  onChanged: (value) {
-                    // provider.updateMessage(value);
-                  },
-                  onSaved: (value) {
-                    description2.value = value!;
-                  },
+                  // onChanged: (value) {
+                  //   description2.value = value;
+                  //   // provider.updateMessage(value);
+                  // },
+                  controller: description2,
+                  // onSaved: (value) {
+                  //   description2.value = value!;
+                  // },
                 ),
                 gapH16,
                 SizedBox(
@@ -135,25 +144,46 @@ class NotificationCreateScreen extends HookConsumerWidget {
                   onPressed: messageType.value.isEmpty
                       ? null
                       : () async {
+                          formKey.currentState!.save();
                           if (formKey.currentState!.validate()) {
-                            formKey.currentState!.save();
-                            final response = await ref
+                            debugPrint(jsonEncode({
+                              "topic": "ACRAdminTopic",
+                              "deviceToken":
+                                  'c2qbR8RSTBuo0OXHnebzDl:APA91bH-R2mm7WCpzTY8qvImBAxU5DlG-razkoHOb-oB_U7o1JTQ4Y_9AM808djXkqKWgctX4Fpv9svjowGCwaQEHD2zrj1GOclGkx1e7IUcfgK-D1CRYh4',
+                              "message": {
+                                "title": title.value.text,
+                                "body": description.value.text
+                              },
+                              "data": {"type": "message"}
+                            }));
+                            await ref
                                 .watch(functionProvider)
                                 .createExecution(
                                     functionId: '677ffbf9000f8d9b7a1a',
                                     path: 'sendPushByTopic',
-                                    body: """
-                                      {
-                                          "topic": "ACRAdminTopic",
-                                          "message": {
-                                              "title": "$title",
-                                              "body": "$description"
-                                          },
-                                          "data": {
-                                              "type": "message" 
-                                          }    
-                                      }""").then((value) {
-                              debugPrint(value.toString());
+                                    body: jsonEncode({
+                                      "topic": 'ACRAdminTopic',
+                                      "deviceToken":
+                                          'c2qbR8RSTBuo0OXHnebzDl:APA91bH-R2mm7WCpzTY8qvImBAxU5DlG-razkoHOb-oB_U7o1JTQ4Y_9AM808djXkqKWgctX4Fpv9svjowGCwaQEHD2zrj1GOclGkx1e7IUcfgK-D1CRYh4',
+                                      "message": {
+                                        "title": title.value.text,
+                                        "body": description.value.text
+                                      },
+                                      "data": {"type": 'message'},
+                                    }),
+                                    headers: {
+                                      "Content-Type": "application/json",
+                                    },
+                                    method: ExecutionMethod.pOST)
+                                .then((value) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Notification created successfully!'),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                              debugPrint(value.responseBody.toString());
                             }).onError((error, stack) {
                               debugPrint("error:${error.toString()}");
                               debugPrint("stack:${stack.toString()}");

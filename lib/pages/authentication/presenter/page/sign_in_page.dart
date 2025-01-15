@@ -1,3 +1,7 @@
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:refugee_dashboard/pages/authentication/presenter/provider/auth_view_model.dart';
+import 'package:refugee_dashboard/pages/entry_point.dart';
 import 'package:refugee_dashboard/shared/constants/config.dart';
 import 'package:refugee_dashboard/shared/constants/defaults.dart';
 import 'package:refugee_dashboard/shared/constants/extensions.dart';
@@ -7,13 +11,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-import 'widgets/social_login_button.dart';
+import '../widgets/social_login_button.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends HookConsumerWidget {
   const SignInPage({super.key});
+  static String routeName = "/sign-in";
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final emailController = useTextEditingController();
+    final passwordController = useTextEditingController();
+    final authProvider = ref.watch(authViewModelProvider);
+    ref.listen(authViewModelProvider, (previous, next) {
+      if (next.isLoggedIn) {
+        context.go(EntryPoint.routeName);
+      }
+    });
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -67,6 +81,7 @@ class SignInPage extends StatelessWidget {
 
                     /// EMAIL TEXT FIELD
                     TextFormField(
+                      controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         prefixIcon: SvgPicture.asset(
@@ -89,6 +104,7 @@ class SignInPage extends StatelessWidget {
 
                     /// PASSWORD TEXT FIELD
                     TextFormField(
+                      controller: passwordController,
                       keyboardType: TextInputType.visiblePassword,
                       obscureText: true,
                       decoration: InputDecoration(
@@ -107,7 +123,18 @@ class SignInPage extends StatelessWidget {
                     SizedBox(
                       width: 296,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          try {
+                            await ref
+                                .read(authViewModelProvider.notifier)
+                                .login(emailController.text,
+                                    passwordController.text);
+                            // Perform additional actions after a successful login
+                          } catch (e) {
+                            // Handle errors gracefully
+                            debugPrint('Login failed: $e');
+                          }
+                        },
                         child: const Text('Sign in'),
                       ),
                     ),
@@ -136,7 +163,9 @@ class SignInPage extends StatelessWidget {
                               color: AppColors.titleLight,
                             ),
                           ),
-                          onPressed: () => context.go('/register'),
+                          onPressed: () async {
+                            context.go('/register');
+                          },
                           child: const Text('Sign up'),
                         ),
                       ],
