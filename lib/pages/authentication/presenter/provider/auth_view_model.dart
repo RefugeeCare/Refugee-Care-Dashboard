@@ -25,6 +25,7 @@ class AuthViewModel extends _$AuthViewModel {
       final response = await authRepository.login(
           phoneNumber: phoneNumber, password: password);
       response.fold((failure) {
+        debugPrint(failure.message.toString());
         state = state.copyWith(errorMessage: failure.message, isLoading: false);
         return;
       }, (user) async {
