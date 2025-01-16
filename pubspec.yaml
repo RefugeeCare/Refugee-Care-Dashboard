@@ -27,8 +27,9 @@ dependencies:
   get_it: ^8.0.0
   http: ^1.2.1
   equatable: ^2.0.5
-  appwrite:
-    path: ./app-write-sdk
+  appwrite: ^13.1.1
+  # appwrite:
+  #path: ./app-write-sdk
 
 dev_dependencies:
   flutter_test:

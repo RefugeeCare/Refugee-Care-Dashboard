@@ -15,11 +15,11 @@ class AuthViewModel extends _$AuthViewModel {
     try {
       debugPrint('login starting...');
       final authRepository = ref.watch(authRepositoryProvider);
-      if (phoneNumber.isEmpty || password.isEmpty) {
-        state =
-            state.copyWith(errorMessage: 'Email and Password cannot be empty');
-        return;
-      }
+      // if (phoneNumber.isEmpty || password.isEmpty) {
+      //   state =
+      //       state.copyWith(errorMessage: 'Email and Password cannot be empty');
+      //   return;
+      // }
 
       state = AuthState(isLoading: true);
       final response = await authRepository.login(
@@ -27,16 +27,13 @@ class AuthViewModel extends _$AuthViewModel {
       response.fold((failure) {
         debugPrint(failure.message.toString());
         state = state.copyWith(errorMessage: failure.message, isLoading: false);
-        return;
       }, (user) async {
         debugPrint(user.name.toString());
         // await authRepository.saveUser(user: user);
         state = state.copyWith(isLoggedIn: true, isLoading: false);
-        return;
       });
     } catch (e) {
       state = state.copyWith(errorMessage: e.toString(), isLoading: false);
-      return;
     }
   }
 }
