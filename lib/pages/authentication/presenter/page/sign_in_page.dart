@@ -118,26 +118,36 @@ class SignInPage extends HookConsumerWidget {
                       ),
                     ),
                     gapH16,
+                    if (authProvider.errorMessage?.isNotEmpty == true)
+                      Text(
+                        authProvider.errorMessage ?? '',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.error),
+                      ),
+                    if (authProvider.errorMessage?.isNotEmpty == true) gapH16,
 
                     /// SIGN IN BUTTON
-                    SizedBox(
-                      width: 296,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          try {
-                            await ref
-                                .read(authViewModelProvider.notifier)
-                                .login(emailController.text,
-                                    passwordController.text);
-                            // Perform additional actions after a successful login
-                          } catch (e) {
-                            // Handle errors gracefully
-                            debugPrint('Login failed: $e');
-                          }
-                        },
-                        child: const Text('Sign in'),
-                      ),
-                    ),
+                    authProvider.isLoading
+                        ? CircularProgressIndicator.adaptive()
+                        : SizedBox(
+                            width: 296,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                try {
+                                  await ref
+                                      .read(authViewModelProvider.notifier)
+                                      .login(emailController.text,
+                                          passwordController.text);
+                                  // Perform additional actions after a successful login
+                                } catch (e) {
+                                  // Handle errors gracefully
+                                  debugPrint('Login failed: $e');
+                                }
+                              },
+                              child: const Text('Sign in'),
+                            ),
+                          ),
                     gapH24,
 
                     /// FOOTER TEXT

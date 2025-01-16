@@ -1,26 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_view_model.dart';
+part of 'splah_screen_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authViewModelHash() => r'4bd4d5f02761b807defb977f72a355f50990fbd1';
+String _$splashScreenViewModelHash() =>
+    r'8a4afb7f447bdd4a836872eefaf0ff3685ca4eec';
 
-/// See also [AuthViewModel].
-@ProviderFor(AuthViewModel)
-final authViewModelProvider =
-    AutoDisposeNotifierProvider<AuthViewModel, AuthState>.internal(
-  AuthViewModel.new,
-  name: r'authViewModelProvider',
+/// See also [SplashScreenViewModel].
+@ProviderFor(SplashScreenViewModel)
+final splashScreenViewModelProvider =
+    AutoDisposeNotifierProvider<SplashScreenViewModel, SplashState>.internal(
+  SplashScreenViewModel.new,
+  name: r'splashScreenViewModelProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$authViewModelHash,
+      : _$splashScreenViewModelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$AuthViewModel = AutoDisposeNotifier<AuthState>;
+typedef _$SplashScreenViewModel = AutoDisposeNotifier<SplashState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

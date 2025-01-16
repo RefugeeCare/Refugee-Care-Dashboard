@@ -1,3 +1,6 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:refugee_dashboard/data/services/app_write_client_provider.dart';
+import 'package:refugee_dashboard/pages/authentication/presenter/page/sign_in_page.dart';
 import 'package:refugee_dashboard/pages/dashboard/widgets/theme_tabs.dart';
 import 'package:refugee_dashboard/responsive.dart';
 import 'package:refugee_dashboard/shared/constants/defaults.dart';
@@ -6,15 +9,16 @@ import 'package:refugee_dashboard/shared/widgets/sidemenu/customer_info.dart';
 import 'package:refugee_dashboard/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../constants/config.dart';
 import 'menu_tile.dart';
 
-class Sidebar extends StatelessWidget {
+class Sidebar extends HookConsumerWidget {
   const Sidebar({super.key, required this.onPressed});
   final Function(String menu) onPressed;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
       // width: Responsive.isMobile(context) ? double.infinity : null,
       // width: MediaQuery.of(context).size.width < 1300 ? 260 : null,
@@ -119,7 +123,9 @@ class Sidebar extends StatelessWidget {
                           isSubmenu: true,
                           title: "List",
                           count: 16,
-                          onPressed: () {},
+                          onPressed: () {
+                            onPressed("notification-list");
+                          },
                         ),
                         // MenuTile(
                         //   isSubmenu: true,
@@ -188,6 +194,19 @@ class Sidebar extends StatelessWidget {
                   ),
                   gapH20,
                   const ThemeTabs(),
+                  gapH20,
+                  MenuTile(
+                    title: "Logout",
+                    activeIconSrc: "assets/icons/logout_filled.svg",
+                    inactiveIconSrc: "assets/icons/logout_filled.svg",
+                    onPressed: () async {
+                      await ref
+                          .read(accountProvider)
+                          .deleteSession(sessionId: 'current');
+
+                      context.go(SignInPage.routeName);
+                    },
+                  ),
                   gapH8,
                 ],
               ),

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:refugee_dashboard/data/services/app_write_client_provider.dart';
+import 'package:refugee_dashboard/pages/notification/model/refugee_notification.dart';
+import 'package:refugee_dashboard/pages/notification/presenter/provider/notification_view_model.dart';
 import 'package:refugee_dashboard/shared/constants/defaults.dart';
 import 'package:refugee_dashboard/shared/constants/ghaps.dart';
 import 'package:refugee_dashboard/shared/widgets/button/refugee_outline_button.dart';
@@ -23,6 +25,7 @@ class NotificationCreateScreen extends HookConsumerWidget {
     final description = useTextEditingController();
     final description2 = useTextEditingController();
     final messageType = useState('');
+    final topic = useState('ACRAdminTopic');
 
     return SingleChildScrollView(
       child: Container(
@@ -141,55 +144,63 @@ class NotificationCreateScreen extends HookConsumerWidget {
                     )),
                 gapH16,
                 ElevatedButton(
-                  onPressed: messageType.value.isEmpty
-                      ? null
-                      : () async {
-                          formKey.currentState!.save();
-                          if (formKey.currentState!.validate()) {
-                            debugPrint(jsonEncode({
-                              "topic": "ACRAdminTopic",
-                              "deviceToken":
-                                  'c2qbR8RSTBuo0OXHnebzDl:APA91bH-R2mm7WCpzTY8qvImBAxU5DlG-razkoHOb-oB_U7o1JTQ4Y_9AM808djXkqKWgctX4Fpv9svjowGCwaQEHD2zrj1GOclGkx1e7IUcfgK-D1CRYh4',
-                              "message": {
-                                "title": title.value.text,
-                                "body": description.value.text
-                              },
-                              "data": {"type": "message"}
-                            }));
-                            await ref
-                                .watch(functionProvider)
-                                .createExecution(
-                                    functionId: '677ffbf9000f8d9b7a1a',
-                                    path: 'sendPushByTopic',
-                                    body: jsonEncode({
-                                      "topic": 'ACRAdminTopic',
-                                      "deviceToken":
-                                          'c2qbR8RSTBuo0OXHnebzDl:APA91bH-R2mm7WCpzTY8qvImBAxU5DlG-razkoHOb-oB_U7o1JTQ4Y_9AM808djXkqKWgctX4Fpv9svjowGCwaQEHD2zrj1GOclGkx1e7IUcfgK-D1CRYh4',
-                                      "message": {
-                                        "title": title.value.text,
-                                        "body": description.value.text
-                                      },
-                                      "data": {"type": 'message'},
-                                    }),
-                                    headers: {
-                                      "Content-Type": "application/json",
-                                    },
-                                    method: ExecutionMethod.pOST)
-                                .then((value) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                      'Notification created successfully!'),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
-                              debugPrint(value.responseBody.toString());
-                            }).onError((error, stack) {
-                              debugPrint("error:${error.toString()}");
-                              debugPrint("stack:${stack.toString()}");
-                            });
-                          }
-                        },
+                  onPressed: () async {
+                    try {
+                      formKey.currentState!.save();
+                      if (formKey.currentState!.validate()) {
+                        debugPrint(jsonEncode({
+                          "topic": topic.value,
+                          "deviceToken":
+                              'c2qbR8RSTBuo0OXHnebzDl:APA91bH-R2mm7WCpzTY8qvImBAxU5DlG-razkoHOb-oB_U7o1JTQ4Y_9AM808djXkqKWgctX4Fpv9svjowGCwaQEHD2zrj1GOclGkx1e7IUcfgK-D1CRYh4',
+                          "message": {
+                            "title": title.value.text,
+                            "body": description.value.text
+                          },
+                          "data": {"type": "message"}
+                        }));
+                        await ref
+                            .watch(functionProvider)
+                            .createExecution(
+                                functionId: '677ffbf9000f8d9b7a1a',
+                                path: 'sendPushByTopic',
+                                body: jsonEncode({
+                                  "topic": topic.value,
+                                  "deviceToken":
+                                      'c2qbR8RSTBuo0OXHnebzDl:APA91bH-R2mm7WCpzTY8qvImBAxU5DlG-razkoHOb-oB_U7o1JTQ4Y_9AM808djXkqKWgctX4Fpv9svjowGCwaQEHD2zrj1GOclGkx1e7IUcfgK-D1CRYh4',
+                                  "message": {
+                                    "title": title.value.text,
+                                    "body": description.value.text
+                                  },
+                                  "data": {"type": 'message'},
+                                }),
+                                headers: {
+                                  "Content-Type": "application/json",
+                                },
+                                method: ExecutionMethod.pOST)
+                            .then((value) async {
+                          debugPrint(value.responseBody.toString());
+                          await ref
+                              .watch(notificationViewModelProvider.notifier)
+                              .addNewNotification(RefugeeNotification(
+                                  title: title.value.text,
+                                  description: description.value.text,
+                                  communityId: ""));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content:
+                                  Text('Notification created successfully!'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        }).onError((error, stack) {
+                          debugPrint("error:${error.toString()}");
+                          debugPrint("stack:${stack.toString()}");
+                        });
+                      }
+                    } catch (e) {
+                      debugPrint(e.toString());
+                    }
+                  },
                   child: Text('Create Notification'),
                 ),
               ],

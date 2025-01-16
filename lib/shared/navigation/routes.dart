@@ -2,10 +2,15 @@ import 'package:refugee_dashboard/pages/authentication/presenter/page/register_p
 import 'package:refugee_dashboard/pages/authentication/presenter/page/sign_in_page.dart';
 import 'package:refugee_dashboard/pages/entry_point.dart';
 import 'package:go_router/go_router.dart';
+import 'package:refugee_dashboard/pages/splash/splash_screen.dart';
 
 final routerConfig = GoRouter(
-  initialLocation: SignInPage.routeName,
+  initialLocation: SplashScreen.routeName,
   routes: [
+    GoRoute(
+      path: SplashScreen.routeName,
+      builder: (context, state) => SplashScreen(),
+    ),
     GoRoute(
       path: EntryPoint.routeName,
       builder: (context, state) => EntryPoint(),

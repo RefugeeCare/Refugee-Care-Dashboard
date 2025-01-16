@@ -1,5 +1,6 @@
 import 'package:refugee_dashboard/pages/dashboard/widgets/popular_products.dart';
-import 'package:refugee_dashboard/pages/notification/presenter/notification_create_screen.dart';
+import 'package:refugee_dashboard/pages/notification/presenter/create/notification_create_screen.dart';
+import 'package:refugee_dashboard/pages/notification/presenter/list/notification_list_screen.dart';
 import 'package:refugee_dashboard/responsive.dart';
 import 'package:refugee_dashboard/shared/constants/defaults.dart';
 import 'package:refugee_dashboard/shared/widgets/sidemenu/sidebar.dart';
@@ -117,6 +118,14 @@ class _EndPointState extends State<EntryPoint> {
                                   (Responsive.isMobile(context) ? 1 : 1.5),
                             ),
                             child: SafeArea(child: NotificationCreateScreen()),
+                          ),
+                        if (widget.currentScreen == "notification-list")
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppDefaults.padding *
+                                  (Responsive.isMobile(context) ? 1 : 1.5),
+                            ),
+                            child: SafeArea(child: NotificationListScreen()),
                           ),
                       ],
                     ),

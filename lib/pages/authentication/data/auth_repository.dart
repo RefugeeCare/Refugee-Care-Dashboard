@@ -128,28 +128,47 @@ class AuthRepositoryImpl implements AuthRepository {
             name: result.name,
             token: result.$id));
       });
-    } catch (e) {
-      debugPrint("Exception: $e");
-      if (e is AppwriteException) {
-        debugPrint("AppwriteException: ${e.message}");
-        return Left(
-          AppException(
-            message: e.message ?? 'Unknown error occurred',
-            statusCode: e.code ?? 400,
-            title: "Login error",
-            identifier: '${e.message}\nLoginUserRemoteDataSource.loginUser',
-          ),
-        );
-      } else {
-        return Left(
-          AppException(
-            message: 'Unknown error occurred',
-            statusCode: 400,
-            title: "Unknown error",
-            identifier: '${e.toString()}\nLoginUserRemoteDataSource.loginUser',
-          ),
-        );
-      }
+    } on AppwriteException catch (e) {
+      debugPrint(e.response.toString());
+      return Left(
+        AppException(
+          message: e.message ?? 'Unknown error occurred',
+          statusCode: e.code ?? 400,
+          title: "Login error",
+          identifier: '${e.message}\nLoginUserRemoteDataSource.loginUser',
+        ),
+      );
     }
+    // catch (e) {
+    //   debugPrint("Exception: $e");
+    //   return Left(
+    //     AppException(
+    //       message: 'Unknown error occurred',
+    //       statusCode: 400,
+    //       title: "Unknown error",
+    //       identifier: '${e.toString()}\nLoginUserRemoteDataSource.loginUser',
+    //     ),
+    //   );
+    //   // if (e is AppwriteException) {
+    //   //   debugPrint("AppwriteException: ${e.message}");
+    //   //   return Left(
+    //   //     AppException(
+    //   //       message: e.message ?? 'Unknown error occurred',
+    //   //       statusCode: e.code ?? 400,
+    //   //       title: "Login error",
+    //   //       identifier: '${e.message}\nLoginUserRemoteDataSource.loginUser',
+    //   //     ),
+    //   //   );
+    //   // } else {
+    //   //   return Left(
+    //   //     AppException(
+    //   //       message: 'Unknown error occurred',
+    //   //       statusCode: 400,
+    //   //       title: "Unknown error",
+    //   //       identifier: '${e.toString()}\nLoginUserRemoteDataSource.loginUser',
+    //   //     ),
+    //   //   );
+    //   // }
+    // }
   }
 }
