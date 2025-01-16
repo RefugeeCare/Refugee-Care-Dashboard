@@ -28,7 +28,7 @@ dependencies:
   http: ^1.2.1
   equatable: ^2.0.5
   appwrite:
-    path: /Users/vanzarlyanhtan/VSCode Projects/refugee_care_mobile/app-write-sdk
+    path: ./app-write-sdk
 
 dev_dependencies:
   flutter_test:

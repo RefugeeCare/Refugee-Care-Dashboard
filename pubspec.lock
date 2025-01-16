@@ -41,8 +41,8 @@ packages:
   appwrite:
     dependency: "direct main"
     description:
-      path: "/Users/vanzarlyanhtan/VSCode Projects/refugee_care_mobile/app-write-sdk"
-      relative: false
+      path: app-write-sdk
+      relative: true
     source: path
     version: "13.1.0"
   args:
