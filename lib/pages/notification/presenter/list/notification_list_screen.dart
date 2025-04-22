@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:refugee_dashboard/pages/notification/model/refugee_notification.dart';
 import 'package:refugee_dashboard/pages/notification/presenter/list/notification_item.dart';
 import 'package:refugee_dashboard/pages/notification/presenter/provider/notification_view_model.dart';
 import 'package:refugee_dashboard/shared/constants/defaults.dart';
